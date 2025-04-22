@@ -15,7 +15,7 @@ class ColorStream {
     Colors.lime,
   ];
 
-// Untuk menghasilkan stream yang mengeluarkan warna secara berulang setiap detik
+  // Untuk menghasilkan stream yang mengeluarkan warna secara berulang setiap detik
   Stream<Color> getColors() async* {
     // yield* digunakan untuk mengeluarkan nilai dari stream yang diberikan
     // Stream.periodic() menghasilkan stream yang mengeluarkan nilai berulang setiap durasi yang diberikan
@@ -34,6 +34,10 @@ class NumberStream {
     // Menambahkan angka baru ke dalam sink
     // sink adalah tempat untuk menambahkan data ke dalam stream
     controller.sink.add(newNumber);
+  }
+
+  addError() {
+    controller.sink.addError("error");
   }
 
   close() {
