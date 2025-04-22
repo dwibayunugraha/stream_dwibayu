@@ -1,10 +1,8 @@
 # Tugas Flutter State Management dengan Streams
 
-Miftahudin Aldi Saputra - 1122140079
-
 ## Deskripsi Proyek
 
-Proyek Flutter yang mendemonstrasikan statre management dengan streams.
+Proyek Flutter yang mendemonstrasikan state management dengan streams.
 
 ## Laporan Praktikum
 
