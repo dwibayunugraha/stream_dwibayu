@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Stream DwiBayu',
-      theme: ThemeData(primarySwatch: Colors.deepOrange),
+      theme: ThemeData(primarySwatch: Colors.lightGreen),
       home: const StreamHomePage(),
     );
   }
@@ -39,6 +39,8 @@ class _StreamHomePageState extends State<StreamHomePage> {
   late NumberStream numberStream;
 
   late StreamTransformer transformer;
+
+  late StreamSubscription subscription;
 
   void changeColor() async {
     // langkah 9
@@ -80,24 +82,43 @@ class _StreamHomePageState extends State<StreamHomePage> {
     numberStreamController = numberStream.controller;
     Stream stream = numberStreamController.stream;
 
-    stream
-        .transform(transformer)
-        .listen((event) {
-          setState(() {
-            lastNumber = event;
-          });
-        })
-        .onError((error) {
-          setState(() {
-            lastNumber = -1;
-          });
-        });
+    subscription = stream.listen((event) {
+      setState(() {
+        lastNumber = event;
+      });
+    });
+
+    subscription.onError((error) {
+      setState(() {
+        lastNumber = -1;
+      });
+    });
+
+    subscription.onDone(() {
+      print('OnDone was called');
+    });
+
+    // stream.transform(transformer).listen((event) {
+    //   setState(() {
+    //     lastNumber = event;
+    //   });
+    // }).onError((error) {
+    //   setState(() {
+    //     lastNumber = -1;
+    //   });
+    // });
 
     super.initState();
   }
 
+  // untuk menghentikan stream
+  void stopStream() {
+    numberStreamController.close();
+  }
+
   @override
   void dispose() {
+    subscription.cancel();
     numberStream.close();
     super.dispose();
   }
@@ -116,6 +137,10 @@ class _StreamHomePageState extends State<StreamHomePage> {
             ElevatedButton(
               onPressed: () => addRandomNumber(),
               child: const Text('New Random Number'),
+            ),
+            ElevatedButton(
+              onPressed: () => stopStream(),
+              child: const Text('Stop Subscription'),
             ),
           ],
         ),
